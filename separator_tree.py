@@ -1,5 +1,5 @@
 import networkx as nx
-import matplotlib.pyplot as plt
+from utils import plot_graph
 
 def balanced_vertex_separator(G):
     """
@@ -69,15 +69,7 @@ def recursive_partition(G):
     
     return T, T['nodes']
 
-def plot_graph(G, title):
-    """
-    Plot the grid graph G with grid-like layout.
-    """
-    pos = {n: (n % 5, n // 5) for n in G.nodes()}  # Grid layout
-    plt.figure(figsize=(6, 6))
-    plt.title(title)
-    nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=500)
-    plt.show()
+
 
 if __name__ == "__main__":
     # 1. Create a 5x5 planar grid graph
