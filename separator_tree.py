@@ -76,15 +76,9 @@ def planar_separator_algorithm(G):
     subgraph1_nodes = {node for node in target_component if node in levels and levels[node] <= l1}
     subgraph2_nodes = {node for node in target_component if node in levels and levels[node] > l1}
 
-    print("subgraph1_nodes ", subgraph1_nodes)
-    print("subgraph2_nodes ", subgraph2_nodes)
-    
     # Include separator nodes in both subgraphs
     subgraph1 = G.subgraph(subgraph1_nodes | set(separator_nodes)).copy()
     subgraph2 = G.subgraph(subgraph2_nodes | set(separator_nodes)).copy()
-
-    plot_graph(subgraph1, title="Subgraph1")
-    plot_graph(subgraph2, title="Subgraph2")
     
     return separator_nodes, subgraph1, subgraph2
 
@@ -97,6 +91,10 @@ def recursive_separation(G):
     
     # Find a balanced separator
     separator, H1, H2 = planar_separator_algorithm(G)
+    
+    # Stop recursion if subgraphs are edge-less
+    if H1.number_of_edges() == 0 or H2.number_of_edges() == 0:
+        return None, G.nodes()
 
     # Recurse on the subgraphs
     T1, nodes1 = recursive_separation(H1)
@@ -112,6 +110,17 @@ def recursive_separation(G):
     
     return T, T['nodes']
 
+def print_separator_tree(tree, depth=0):
+    if tree is None:
+        return
+    indent = "  " * depth
+    print(f"{indent}Separator: {tree['separator']}")
+    if tree['left'] or tree['right']:
+        print(f"{indent}Left:")
+        print_separator_tree(tree['left'], depth + 1)
+        print(f"{indent}Right:")
+        print_separator_tree(tree['right'], depth + 1)
+
 if __name__ == "__main__":
     # 1. Create a 5x5 planar grid graph
     G = nx.grid_2d_graph(5, 5)
@@ -123,3 +132,4 @@ if __name__ == "__main__":
     
     # 2. Generate the separator tree
     separator_tree, _ = recursive_separation(G)
+    print_separator_tree(separator_tree)
