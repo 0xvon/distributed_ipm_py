@@ -82,8 +82,9 @@ def planar_separator_algorithm(G):
     print("subgraph1_nodes ", subgraph1_nodes)
     print("subgraph2_nodes ", subgraph2_nodes)
     
-    subgraph1 = G.subgraph(subgraph1_nodes | set(separator_nodes))
-    subgraph2 = G.subgraph(subgraph2_nodes | set(separator_nodes))
+    # Create mutable copies of the subgraphs
+    subgraph1 = nx.Graph(G.subgraph(subgraph1_nodes | set(separator_nodes)).copy())
+    subgraph2 = nx.Graph(G.subgraph(subgraph2_nodes | set(separator_nodes)).copy())
     
     # Step 8: Ensure that the subgraphs are edge-disjoint except for the separator
     # Remove any edges in subgraph1 and subgraph2 that are not within their respective node sets
