@@ -9,17 +9,14 @@ from utils import plot_graph
 def planar_separator_algorithm(G):
     # Step 1: Find a planar embedding of G and construct a representation for it
     pos = nx.planar_layout(G)
-    print("Planar embedding positions: ", pos)
     
     # Step 2: Find the connected components of G and determine the cost of each one
     components = list(nx.connected_components(G))
-    print("Connected components: ", components)
     
     component_costs = {frozenset(comp): sum(G.nodes[v]['cost'] for v in comp) for comp in components}
     
     # If all components have costs <= 2/3, construct the partition and return
     if all(cost <= 2/3 for cost in component_costs.values()):
-        print("All components have cost <= 2/3. Proceed with partitioning as per Theorem 4.")
         return G.nodes
     
     # Otherwise, find the most costly component
@@ -39,9 +36,6 @@ def planar_separator_algorithm(G):
             level_sizes[level] = 0
         level_sizes[level] += 1
     
-    print("Levels: ", levels)
-    print("Level sizes: ", level_sizes)
-    
     # Step 4: Find the critical level l1 such that the total cost of levels 0 through l1-1 does not exceed 1/2,
     # but the total cost of levels 0 through l1 does exceed 1/2.
     cumulative_cost = 0
@@ -58,9 +52,6 @@ def planar_separator_algorithm(G):
     # k is the number of vertices in levels 0 through l1
     k = sum(level_sizes[l] for l in range(l1 + 1))
     
-    print("Critical level l1: ", l1)
-    print("Number of vertices k in levels 0 through l1: ", k)
-    
     # Step 5: Find the highest level l0 <= l1 such that L(l0) + 2(l1 - l0) <= 2√k,
     # and the lowest level l2 >= l1 + 1 such that L(l2) + 2(l2 - l1 - 1) <= 2√(n-k).
     sqrt_k = 2 * np.sqrt(k)
@@ -69,22 +60,21 @@ def planar_separator_algorithm(G):
     l0 = max([l for l in range(l1 + 1) if level_sizes[l] + 2 * (l1 - l) <= sqrt_k])
     l2 = min([l for l in range(l1 + 1, max(level_sizes.keys()) + 1) if level_sizes[l] + 2 * (l - l1 - 1) <= sqrt_n_minus_k])
     
-    print("Highest level l0 <= l1: ", l0)
-    print("Lowest level l2 >= l1 + 1: ", l2)
-    
     # Step 6: Identify separator nodes
     separator_nodes = [node for node, level in levels.items() if level == l1]
     
     # Step 7: Create subgraphs
     subgraph1_nodes = {node for node in target_component if node in levels and levels[node] <= l1}
     subgraph2_nodes = {node for node in target_component if node in levels and levels[node] > l1}
-
-    print("subgraph1_nodes ", subgraph1_nodes)
-    print("subgraph2_nodes ", subgraph2_nodes)
+    # print("subgraph1_nodes ", subgraph1_nodes)
+    # print("subgraph2_nodes ", subgraph2_nodes)
     
     # Include separator nodes in both subgraphs
     subgraph1 = G.subgraph(subgraph1_nodes | set(separator_nodes)).copy()
     subgraph2 = G.subgraph(subgraph2_nodes | set(separator_nodes)).copy()
+
+    plot_graph(subgraph1, "Subgraph 1")
+    plot_graph(subgraph2, "Subgraph 2")
     
     # No need to remove edges between separator nodes and the other nodes in the subgraphs.
     
