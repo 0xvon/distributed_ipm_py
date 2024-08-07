@@ -3,6 +3,9 @@ import numpy as np
 from collections import deque
 from utils import plot_graph
 
+# A SEPARATOR THEOREM FOR PLANAR GRAPHS
+# by Richard J. Lipton and Robert E. Tarjan
+# https://www.cs.princeton.edu/courses/archive/fall06/cos528/handouts/sepplanar.pdf
 def planar_separator_algorithm(G):
     # Step 1: Find a planar embedding of G and construct a representation for it
     pos = nx.planar_layout(G)
@@ -87,17 +90,18 @@ def planar_separator_algorithm(G):
     
     return separator_nodes, subgraph1, subgraph2
 
-# Example of creating a graph and applying the separator algorithm
-G = nx.grid_2d_graph(5, 5)  # Example grid graph
-G = nx.convert_node_labels_to_integers(G)
-nx.set_node_attributes(G, 1, 'cost')  # Assign a cost of 1 to each node
-plot_graph(G, "Original Graph")
+if __name__ == "__main__":
+    # Example of creating a graph and applying the separator algorithm
+    G = nx.grid_2d_graph(5, 5)  # Example grid graph
+    G = nx.convert_node_labels_to_integers(G)
+    nx.set_node_attributes(G, 1, 'cost')  # Assign a cost of 1 to each node
+    plot_graph(G, "Original Graph")
 
-separator_nodes, subgraph1, subgraph2 = planar_separator_algorithm(G)
-print("Separator nodes:", separator_nodes)
-print("Subgraph 1 nodes:", subgraph1.nodes())
-print("Subgraph 2 nodes:", subgraph2.nodes())
+    separator_nodes, subgraph1, subgraph2 = planar_separator_algorithm(G)
+    print("Separator nodes:", separator_nodes)
+    print("Subgraph 1 nodes:", subgraph1.nodes())
+    print("Subgraph 2 nodes:", subgraph2.nodes())
 
-# Visualize the resulting subgraphs
-plot_graph(subgraph1, "Subgraph 1")
-plot_graph(subgraph2, "Subgraph 2")
+    # Visualize the resulting subgraphs
+    plot_graph(subgraph1, "Subgraph 1")
+    plot_graph(subgraph2, "Subgraph 2")
