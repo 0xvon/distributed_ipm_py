@@ -1,5 +1,7 @@
 import numpy as np
 
+# Nested Dissection Meets IPMs: Planar Min-Cost Flow in Nearly-Linear Time
+# http://arxiv.org/abs/2205.01562
 def schur_complement(L, F, C):
     """
     Computes the Schur complement of a symmetric matrix L with blocks indexed by F and C.
@@ -22,6 +24,8 @@ def schur_complement(L, F, C):
     Sc = L_CC - L_CF @ L_FF_inv @ L_FC
     return Sc
 
+# Nested Dissection Meets IPMs: Planar Min-Cost Flow in Nearly-Linear Time
+# http://arxiv.org/abs/2205.01562
 def block_cholesky_decomposition(L, F, C):
     """
     Perform block Cholesky decomposition on a symmetric matrix L with blocks indexed by F and C.

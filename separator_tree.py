@@ -82,6 +82,8 @@ def planar_separator_algorithm(G):
     
     return separator_nodes, subgraph1, subgraph2
 
+# Nested Dissection Meets IPMs: Planar Min-Cost Flow in Nearly-Linear Time
+# http://arxiv.org/abs/2205.01562
 def recursive_separation(G):
     """
     Recursively partition the graph G and return the separator tree.
