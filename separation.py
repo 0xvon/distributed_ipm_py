@@ -72,27 +72,18 @@ def planar_separator_algorithm(G):
     # Step 6: Identify separator nodes
     separator_nodes = [node for node, level in levels.items() if level == l1]
     
-    # Step 7: Create subgraphs by removing separator nodes and edges between them
-    H = G.copy()
-    H.remove_nodes_from(separator_nodes)
-    
-    subgraph1_nodes = {node for node in target_component if node in levels and levels[node] < l1}
+    # Step 7: Create subgraphs
+    subgraph1_nodes = {node for node in target_component if node in levels and levels[node] <= l1}
     subgraph2_nodes = {node for node in target_component if node in levels and levels[node] > l1}
 
     print("subgraph1_nodes ", subgraph1_nodes)
     print("subgraph2_nodes ", subgraph2_nodes)
     
-    # Create mutable copies of the subgraphs
-    subgraph1 = nx.Graph(G.subgraph(subgraph1_nodes | set(separator_nodes)).copy())
-    subgraph2 = nx.Graph(G.subgraph(subgraph2_nodes | set(separator_nodes)).copy())
+    # Include separator nodes in both subgraphs
+    subgraph1 = G.subgraph(subgraph1_nodes | set(separator_nodes)).copy()
+    subgraph2 = G.subgraph(subgraph2_nodes | set(separator_nodes)).copy()
     
-    # Step 8: Ensure that the subgraphs are edge-disjoint except for the separator
-    # Remove any edges in subgraph1 and subgraph2 that are not within their respective node sets
-    edges_to_remove_from_subgraph1 = [(u, v) for u, v in subgraph1.edges() if u not in subgraph1_nodes or v not in subgraph1_nodes]
-    edges_to_remove_from_subgraph2 = [(u, v) for u, v in subgraph2.edges() if u not in subgraph2_nodes or v not in subgraph2_nodes]
-    
-    subgraph1.remove_edges_from(edges_to_remove_from_subgraph1)
-    subgraph2.remove_edges_from(edges_to_remove_from_subgraph2)
+    # No need to remove edges between separator nodes and the other nodes in the subgraphs.
     
     return separator_nodes, subgraph1, subgraph2
 
@@ -107,6 +98,6 @@ print("Separator nodes:", separator_nodes)
 print("Subgraph 1 nodes:", subgraph1.nodes())
 print("Subgraph 2 nodes:", subgraph2.nodes())
 
-# If you have a plot_graph function, you can use it to visualize the graphs
+# Visualize the resulting subgraphs
 plot_graph(subgraph1, "Subgraph 1")
 plot_graph(subgraph2, "Subgraph 2")
