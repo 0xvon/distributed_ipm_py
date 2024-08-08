@@ -79,6 +79,9 @@ def planar_separator_algorithm(G):
     # Include separator nodes in both subgraphs
     subgraph1 = G.subgraph(subgraph1_nodes | set(separator_nodes)).copy()
     subgraph2 = G.subgraph(subgraph2_nodes | set(separator_nodes)).copy()
+
+    plot_graph(subgraph1, title="Subgraph 1")
+    plot_graph(subgraph2, title="Subgraph 2")
     
     return separator_nodes, subgraph1, subgraph2
 
