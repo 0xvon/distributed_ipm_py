@@ -69,25 +69,19 @@ graph TD;
 
 #### 5. Cholesky Decomposition
 
-Cholesky decomposition on a symmetric matrix L with blocks indexed by F and C.
+Cholesky decomposition on a symmetric matrix $\mathit{L}$ which can construct $\tilde{\mathit{P}}_w$ with 3 blocks.
 
 $$
-\mathbf{L} =
-\begin{bmatrix}
-\mathbf{I} & \mathbf{0} \\
-\mathbf{L}_{C,F}\mathbf{(L_{F,F})^{-1}} & \mathbf{I}
-\end{bmatrix}
-\begin{bmatrix}
-\mathbf{L}_{F,F} & \mathbf{0} \\
-\mathbf{0} & \text{Sc}(\mathbf{L},C)
-\end{bmatrix}
-\begin{bmatrix}
-\mathbf{I} & \mathbf{(L_{F,F})^{-1}L_{F,C}} \\
-\mathbf{0} & \mathbf{I}
-\end{bmatrix}
+\mathit{L} = \mathit{B}^{\mathsf{T}}\mathit{W}\mathit{B}
 $$
 
-Using this technique, $\tilde{\mathit{P}}_w$ can also be decomposed into its respective nodes. IPM can then be performed in a distributed manner using the property that the sum of $\tilde{\mathit{P}}_w$ of the child nodes is equal to $\tilde{\mathit{P}}_w$ of the parent nodes.
+Then the following relation holds for $\mathit{L}^{(G)}$ of a graph $G$ and $\mathit{L}^{(H_1)}, \mathit{L}^{(H_2)}$ for its decomposition graphs $H_1, H_2$:
+
+$$
+\mathit{L}^{(G)} = \mathit{L}^{(H_1)} + \mathit{L}^{(H_2)}
+$$
+
+Using this technique, IPM can then be performed in parallel.
 
 Finally, total runnign time is $O(n \cdot poly(log \ n))$.
 
