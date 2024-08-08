@@ -13,29 +13,29 @@ The min-cost flow problem can be reformulated into a linear program in the follo
 Primal:
 
 $$
-\min_{\bm{B}^{\mathsf{T}}\bm{f}=\bm{0}, \bm{l}≤\bm{f}≤\bm{u}} \bm{c}^{\mathsf{T}}\bm{f}
+\min_{\mathit{B}^{\mathsf{T}}\mathrm{f}=\mathit{0}, \mathit{l}≤\mathit{f}≤\mathit{u}} \mathit{c}^{\mathsf{T}}\mathit{f}
 $$
 
 Dual:
 
 $$
-\min_{\bm{By}+\bm{s}=\bm{c}} \sum \min (\bm{l_i, s_i, u_i, s_i})
+\min_{\mathit{By}+\mathit{s}=\mathit{c}} \sum \min (\mathit{l_i, s_i, u_i, s_i})
 $$
 
-where $\bm{B} \in \mathbb{R}^{m \times n}$ is an edge-vertex incidence matrix of the graph, $\bm{f}$ is the flow and $\bm{s}$ is the slack.
+where $\mathit{B} \in \mathbb{R}^{m \times n}$ is an edge-vertex incidence matrix of the graph, $\mathit{f}$ is the flow and $\mathit{s}$ is the slack.
 
 #### 2. Interior Point Method
 
 Our approach is to use the interior point method to solve the min-cost flow problem.
 
-We define the edge weight matrix $\bm{W}$ and direction $\bm{v}$, then update $\bm{f}, \bm{s}$ by:
+We define the edge weight matrix $\mathit{W}$ and direction $\mathit{v}$, then update $\mathit{f}, \mathit{s}$ by:
 
 $$
-\bm{f} \leftarrow \bm{f} + h\bm{W}^{1/2}\tilde{\bm{P}'}_w\bm{v}
+\mathit{f} \leftarrow \mathit{f} + h\mathit{W}^{1/2}\tilde{\mathit{P}'}_w\mathit{v}
 $$
 
 $$
-\bm{s} \leftarrow \bm{s} + \alpha\bm{W}^{-1/2}\tilde{\bm{P}}_w\bm{v}
+\mathit{s} \leftarrow \mathit{s} + \alpha\mathit{W}^{-1/2}\tilde{\mathit{P}}_w\mathit{v}
 $$
 
 for $O(\sqrt{m})$ times.
@@ -84,10 +84,10 @@ $$
 \begin{bmatrix}
 \mathbf{I} & \mathbf{(L_{F,F})^{-1}L_{F,C}} \\
 \mathbf{0} & \mathbf{I}
-\end{bmatrix}.
+\end{bmatrix}
 $$
 
-Using this technique, $\tilde{\bm{P}}_w$ can also be decomposed into its respective nodes. IPM can then be performed in a distributed manner using the property that the sum of $\tilde{\bm{P}}_w$ of the child nodes is equal to $\tilde{\bm{P}}_w$ of the parent nodes.
+Using this technique, $\tilde{\mathit{P}}_w$ can also be decomposed into its respective nodes. IPM can then be performed in a distributed manner using the property that the sum of $\tilde{\mathit{P}}_w$ of the child nodes is equal to $\tilde{\mathit{P}}_w$ of the parent nodes.
 
 Finally, total runnign time is $O(n \cdot poly(log \ n))$.
 
